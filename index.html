@@ -51,7 +51,7 @@
 			var localStream = null;
 
 			//var constraints = { audio: false, video: { facingMode: { exact: "environment" } } };
-			var constraints = { audio: false, video: true };
+			var constraints = { audio: false, video: { facingMode: "environment" } };
 			navigator.mediaDevices.getUserMedia(constraints)
 				.then(function(stream) {
 					// video.src = window.URL.createObjectURL(stream);
