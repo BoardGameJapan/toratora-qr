@@ -1,0 +1,95 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
+		<title>Toratora QRcode Reader</title>
+		<script src="jsqrcode/src/grid.js"></script>
+		<script src="jsqrcode/src/version.js"></script>
+		<script src="jsqrcode/src/detector.js"></script>
+		<script src="jsqrcode/src/formatinf.js"></script>
+		<script src="jsqrcode/src/errorlevel.js"></script>
+		<script src="jsqrcode/src/bitmat.js"></script>
+		<script src="jsqrcode/src/datablock.js"></script>
+		<script src="jsqrcode/src/bmparser.js"></script>
+		<script src="jsqrcode/src/datamask.js"></script>
+		<script src="jsqrcode/src/rsdecoder.js"></script>
+		<script src="jsqrcode/src/gf256poly.js"></script>
+		<script src="jsqrcode/src/gf256.js"></script>
+		<script src="jsqrcode/src/decoder.js"></script>
+		<script src="jsqrcode/src/qrcode.js"></script>
+		<script src="jsqrcode/src/findpat.js"></script>
+		<script src="jsqrcode/src/alignpat.js"></script>
+		<script src="jsqrcode/src/databr.js"></script>
+	</head>
+	<body>
+		<h1>Toratora QRcode Reader</h1>
+		<video id="video" width="400" height="300" autoplay="autoplay" muted="muted" playsinline="playsinline"></video>
+		<img id="img"/>
+		<div style="display:none">
+			<canvas id="canvas"></canvas>
+		</div>
+		<input type="button" id="action" value="Read!"></input>
+	</body>
+
+	<script>
+		// based on:
+		//   https://qiita.com/tkyk0317/items/7d7f327cda48086f894f
+		//   https://qiita.com/Futo23/items/bff1ce1d2e1b219b243d
+		navigator.mediaDevices =
+			navigator.mediaDevices ||
+			((navigator.mozGetUserMedia || navigator.webkitGetUserMedia) ? {
+				getUserMedia:
+					function(c) {
+						return new Promise(function(y, n) {
+							(navigator.mozGetUserMedia || navigator.webkitGetUserMedia).call(navigator, c, y, n);
+						});
+					}
+			} : null);
+
+		if (navigator.mediaDevices) {
+			var video = document.getElementById('video');
+			var localStream = null;
+
+			//var constraints = { audio: false, video: { facingMode: { exact: "environment" } } };
+			var constraints = { audio: false, video: true };
+			navigator.mediaDevices.getUserMedia(constraints)
+				.then(function(stream) {
+					// video.src = window.URL.createObjectURL(stream);
+					video.srcObject = stream;
+					localStream = stream;
+				})
+				.catch(function(err) {
+					console.log(err.name + ": " + err.message);
+				});
+
+			function decodeImageFromBase64(data, callback){
+				qrcode.callback = callback;
+				qrcode.decode(data)
+			}
+
+			document.getElementById("action").addEventListener('click', function() {
+				if (localStream) {
+					var canvas = document.getElementById('canvas');
+					var ctx = canvas.getContext('2d');
+					var img = document.getElementById('img');
+
+					//videoの縦幅横幅を取得
+					var w = video.offsetWidth;
+					var h = video.offsetHeight;
+
+					//同じサイズをcanvasに指定
+					canvas.setAttribute("width", w);
+					canvas.setAttribute("height", h);
+					//canvasにコピー
+					ctx.drawImage(video, 0, 0, w, h);
+
+					decodeImageFromBase64(canvas.toDataURL('image/png'), function(result) {
+						alert(result);
+					});
+				}
+			}, false);
+		} else {
+			console.log("getUserMedia() not supported.");
+		}
+	</script>
+</html>
