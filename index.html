@@ -67,6 +67,7 @@
 				return new Promise(function(resolve, reject) {
 					decodeImageFromBase64(data, function(result) {
 						if (result == "error decoding QR Code") {
+							// 本来はrejectすべきところのはず
 							resolve(result);
 						}
 						resolve(result);
@@ -99,6 +100,7 @@
 					for (i = 0; i < 100 && r == "error decoding QR Code"; i++) {
 						r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
 					}
+					console.log("Result: " + r + "(" i +"-th attempt)");
 					alert(r);
 				}
 			}, false);
