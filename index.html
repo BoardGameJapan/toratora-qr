@@ -65,19 +65,15 @@
 			function decodeImageFromBase64promise(data)
 			{
 				return new Promise(function(resolve, reject) {
-					decodeImageFromBase64(data, function(result) {
+					qrcode.callback = function(result) {
 						if (result == "error decoding QR Code") {
 							// 本来はrejectすべきところのはず
 							resolve(result);
 						}
 						resolve(result);
 					});
+					qrcode.decode(data)
 				});
-			}
-
-			function decodeImageFromBase64(data, callback){
-				qrcode.callback = callback;
-				qrcode.decode(data)
 			}
 
 			document.getElementById("action").addEventListener('click', async function() {
