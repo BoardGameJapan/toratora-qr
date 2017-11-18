@@ -95,7 +95,7 @@
 					canvas.setAttribute("height", h);
 
 					r = "error decoding QR Code"
-					for (i = 0; i < 100 && r == "error decoding QR Code"; i++) {
+					for (i = 0; i < 30 && r == "error decoding QR Code"; i++) {
 						// canvasにコピー
 						ctx.drawImage(video, 0, 0, w, h);
 						r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
