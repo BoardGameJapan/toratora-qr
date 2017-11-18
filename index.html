@@ -46,12 +46,10 @@
 					}
 			} : null);
 
+		var video = document.getElementById('video');
+		var localStream = null;
+		var constraints = { audio: false, video: { facingMode: "environment", width: 1280, height: 720 } };
 		if (navigator.mediaDevices) {
-			var video = document.getElementById('video');
-			var localStream = null;
-
-			//var constraints = { audio: false, video: { facingMode: { exact: "environment" } } };
-			var constraints = { audio: false, video: { facingMode: "environment", width: 1280, height: 720 } };
 			navigator.mediaDevices.getUserMedia(constraints)
 				.then(function(stream) {
 					// video.src = window.URL.createObjectURL(stream);
@@ -61,47 +59,47 @@
 				.catch(function(err) {
 					console.log(err.name + ": " + err.message);
 				});
-
-			function decodeImageFromBase64promise(data)
-			{
-				return new Promise(function(resolve, reject) {
-					qrcode.callback = function(result) {
-						if (result == "error decoding QR Code") {
-							// 本来はrejectすべきところのはず
-							resolve(result);
-						}
-						resolve(result);
-					};
-					qrcode.decode(data);
-				});
-			}
-
-			document.getElementById("action").addEventListener('click', async function() {
-				if (localStream) {
-					var canvas = document.getElementById('canvas');
-					var ctx = canvas.getContext('2d');
-					var img = document.getElementById('img');
-
-					// videoの縦幅横幅を取得
-					var w = video.offsetWidth;
-					var h = video.offsetHeight;
-
-					// 同じサイズをcanvasに指定
-					canvas.setAttribute("width", w);
-					canvas.setAttribute("height", h);
-
-					r = "error decoding QR Code"
-					for (i = 0; i < 30 && r == "error decoding QR Code"; i++) {
-						// canvasにコピー
-						ctx.drawImage(video, 0, 0, w, h);
-						r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
-						console.log("Result: " + r + "(" + i +"-th attempt)");
-					}
-					alert(r);
-				}
-			}, false);
 		} else {
-			console.log("getUserMedia() not supported.");
+			alert("getUserMedia() is not supported in your browser.");
 		}
+
+		function decodeImageFromBase64promise(data)
+		{
+			return new Promise(function(resolve, reject) {
+				qrcode.callback = function(result) {
+					if (result == "error decoding QR Code") {
+						// 本来はrejectすべきところのはず
+						resolve(result);
+					}
+					resolve(result);
+				};
+				qrcode.decode(data);
+			});
+		}
+
+		document.getElementById("action").addEventListener('click', async function() {
+			if (localStream) {
+				var canvas = document.getElementById('canvas');
+				var ctx = canvas.getContext('2d');
+				var img = document.getElementById('img');
+
+				// videoの縦幅横幅を取得
+				var w = video.offsetWidth;
+				var h = video.offsetHeight;
+
+				// 同じサイズをcanvasに指定
+				canvas.setAttribute("width", w);
+				canvas.setAttribute("height", h);
+
+				r = "error decoding QR Code"
+				for (i = 0; i < 30 && r == "error decoding QR Code"; i++) {
+					// canvasにコピー
+					ctx.drawImage(video, 0, 0, w, h);
+					r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
+					console.log("Result: " + r + "(" + i +"-th attempt)");
+				}
+				alert(r);
+			}
+		}, false);
 	</script>
 </html>
