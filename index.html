@@ -62,12 +62,24 @@
 					console.log(err.name + ": " + err.message);
 				});
 
+			function decodeImageFromBase64promise(data)
+			{
+				return new Promise(function(resolve, reject) {
+					decodeImageFromBase64(data, function(result) {
+						if (result == "error decoding QR Code") {
+							resolve(result);
+						}
+						resolve(result);
+					});
+				});
+			}
+
 			function decodeImageFromBase64(data, callback){
 				qrcode.callback = callback;
 				qrcode.decode(data)
 			}
 
-			document.getElementById("action").addEventListener('click', function() {
+			document.getElementById("action").addEventListener('click', async function() {
 				if (localStream) {
 					var canvas = document.getElementById('canvas');
 					var ctx = canvas.getContext('2d');
@@ -83,9 +95,11 @@
 					//canvasにコピー
 					ctx.drawImage(video, 0, 0, w, h);
 
-					decodeImageFromBase64(canvas.toDataURL('image/png'), function(result) {
-						alert(result);
-					});
+					r = "error decoding QR Code"
+					for (i = 0; i < 100 && r == "error decoding QR Code"; i++) {
+						r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
+					}
+					alert(r);
 				}
 			}, false);
 		} else {
