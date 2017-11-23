@@ -27,6 +27,8 @@
 	</head>
 	<body>
 		<h1>Toratora QRReader</h1>
+		<noscript>JavaScript is disabled in your environment!</noscript>
+		<button type="button" id="action" tabindex="0" accesskey="r">Read!</button>
 		<dl id="app">
 			<dt>Status</dt>
 			<dd>{{ status }}</dd>
@@ -36,8 +38,6 @@
 			<dd>{{ p2status }}</dd>
 		</dl>
 		<video id="video" width="1280" height="720" autoplay="autoplay" muted="muted" playsinline="playsinline"></video>
-		<button type="button" id="action" tabindex="0" accesskey="r">Read!</button>
 		<canvas id="canvas"></canvas>
-		<noscript>JavaScript is disabled in your environment!</noscript>
 	</body>
 </html>
