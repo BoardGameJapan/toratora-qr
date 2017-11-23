@@ -83,36 +83,49 @@ function decodeImageFromBase64(data)
 	});
 }
 
+function detectNumOfQRcode()
+{
+	var r = errmsg;
+	for (i = 0; i < 30 && r == errmsg; i++) {
+		// canvasにコピー
+		ctx.drawImage(video, 0, 0, w, h);
+		r = await decodeImageFromBase64(canvas.toDataURL('image/png'))
+		p.status = r + "(" + i +"-th attempt)";
+	}
+	p.char = r;
+	return r == errmsg;
+}
+
+function judgeWinPlayer(p1, p2)
+{
+	// 0ならあいこ、1or2ならPlayer1(2)が勝利
+	return (p1 + 1 == p2) ? 2 : (p1 == p2 + 1) ? 1 : 0;
+}
+
 document.getElementById("action").addEventListener('click', async function() {
 	if (localStream) {
 		// 状況によりpを切り替え
 		p = data.players[data.players[0].char];
 		s.status = "Player" + data.players[0].char + "読み取り中";
-		r = errmsg;
-		for (i = 0; i < 30 && r == errmsg; i++) {
-			// canvasにコピー
-			ctx.drawImage(video, 0, 0, w, h);
-			r = await decodeImageFromBase64(canvas.toDataURL('image/png'))
-			p.status = r + "(" + i +"-th attempt)";
+
+		// QRコードから数値を取得
+		if (detectNumOfQRcode()) {
+			// for debug
+			// p.status = r + "(" + i +"-th attempt)";
+			p.status = "読み取りOK!";
+			s.char++;
+		} else {
+			p.status = "読み取り不可";
 		}
 
-		p.char = r;
-		p.status = r == errmsg ? "読み取り不可" : "読み取りOK!";
-		// for debug
-		// p.status = r + "(" + i +"-th attempt)";
-		if (r != errmsg)
-		{
-			s.char++;
-		}
+		// 勝敗判定(ex)
 		if (s.char == 3)
 		{
-			// 勝敗判定(ex)
-			if (data.players[1].char == 1 && data.players[2].char == 2)
-			{
-				s.status = "Player2の勝利!";
-				// reset
-				s.char = 1;
-			}
+			var judge = jugdeWinPlayer(data.players[1].char, data.players[2].char);
+			s.status = judge == 0 ? "あいこ" : ("Player" + judge + "の勝利!");
+
+			// reset
+			s.char = 1;
 		}
 	}
 }, false); 
