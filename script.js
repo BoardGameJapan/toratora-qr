@@ -83,7 +83,7 @@ function decodeImageFromBase64(data)
 	});
 }
 
-function detectNumOfQRcode()
+async function detectNumOfQRcode()
 {
 	var r = errmsg;
 	for (i = 0; i < 30 && r == errmsg; i++) {
@@ -93,7 +93,7 @@ function detectNumOfQRcode()
 		p.status = r + "(" + i +"-th attempt)";
 	}
 	p.char = r;
-	return r == errmsg;
+	return r != errmsg;
 }
 
 function judgeWinPlayer(p1, p2)
@@ -109,7 +109,8 @@ document.getElementById("action").addEventListener('click', async function() {
 		s.status = "Player" + data.players[0].char + "読み取り中";
 
 		// QRコードから数値を取得
-		if (detectNumOfQRcode()) {
+		var result = await detectNumOfQRcode();
+		if (result) {
 			// for debug
 			// p.status = r + "(" + i +"-th attempt)";
 			p.status = "読み取りOK!";
