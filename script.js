@@ -68,7 +68,7 @@ if (navigator.mediaDevices) {
 
 const errmsg = "error decoding QR Code";
 
-function decodeImageFromBase64promise(data)
+function decodeImageFromBase64(data)
 {
 	return new Promise(function(resolve, reject) {
 		qrcode.callback = resolve;
@@ -92,7 +92,7 @@ document.getElementById("action").addEventListener('click', async function() {
 		for (i = 0; i < 30 && r == errmsg; i++) {
 			// canvasにコピー
 			ctx.drawImage(video, 0, 0, w, h);
-			r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
+			r = await decodeImageFromBase64(canvas.toDataURL('image/png'))
 			p.status = r + "(" + i +"-th attempt)";
 		}
 
