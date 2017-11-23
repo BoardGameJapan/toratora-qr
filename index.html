@@ -28,15 +28,12 @@
 	<body>
 		<h1>Toratora QRReader</h1>
 		<noscript>JavaScript is disabled in your environment!</noscript>
-		<button type="button" id="action" tabindex="0" accesskey="r">Read!</button>
-		<dl id="app">
-			<dt>Status</dt>
-			<dd>{{ status }}</dd>
-			<dt>Player1</dt>
-			<dd>{{ p1status }}</dd>
-			<dt>Player2</dt>
-			<dd>{{ p2status }}</dd>
-		</dl>
+		<div class="flexbox">
+			<button type="button" id="action" tabindex="0" accesskey="r">Read!</button>
+			<ul id="app">
+				<li v-for="p in players">{{ p.title }}: {{ p.status }}</li>
+			</ul>
+		</div>
 		<video id="video" width="1280" height="720" autoplay="autoplay" muted="muted" playsinline="playsinline"></video>
 		<canvas id="canvas"></canvas>
 	</body>

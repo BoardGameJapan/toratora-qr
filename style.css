@@ -1,14 +1,19 @@
+h1 {
+	margin: auto;
+}
+.flexbox {
+	display: -webkit-flex;
+	display: flex;
+}
+button {
+	margin: 5px;
+}
+ul {
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
+}
 canvas
 {
 	display: none;
-}
-dt:before {
-	content: "";
-	display: block;
-}
-dt:after {
-	content: ":";
-}
-dt, dd {
-	display: inline;
 }

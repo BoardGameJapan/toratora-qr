@@ -13,11 +13,23 @@ navigator.mediaDevices =
 	} : null);
 
 var data = {
-	status: '初期状態',
-	p1status: '未読み取り',
-	p2status: '未読み取り',
-	p1char: 0,
-	p2char: 0,
+	players: [
+	{
+		title: 'Status',
+		status: '初期状態',
+		char: 0,
+	},
+	{
+		title: 'Player1',
+		status: '未読み取り',
+		char: 0,
+	},
+	{
+		title: 'Player2',
+		status: '未読み取り',
+		char: 0,
+	}
+	],
 };
 var app = new Vue({
 	el: '#app',
@@ -47,10 +59,10 @@ if (navigator.mediaDevices) {
 			canvas.setAttribute("height", h);
 		})
 		.catch(function(err) {
-			data.status = err.name + ": " + err.message;
+			data.players[0].status = err.name + ": " + err.message;
 		});
 } else {
-	data.status = "getUserMedia() is not supported in your browser.";
+	data.players[0].status = "getUserMedia() is not supported in your browser.";
 }
 
 const errmsg = "error decoding QR Code";
@@ -72,17 +84,19 @@ function decodeImageFromBase64promise(data)
 
 document.getElementById("action").addEventListener('click', async function() {
 	if (localStream) {
-		data.status = "Player1読み取り中";
+		data.players[0].status = "Player1読み取り中";
+		// 状況によりpを切り替え
+		p = data.players[1];
 		r = errmsg;
 		for (i = 0; i < 30 && r == errmsg; i++) {
 			// canvasにコピー
 			ctx.drawImage(video, 0, 0, w, h);
 			r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
-			data.p1status = r + "(" + i +"-th attempt)";
+			p.status = r + "(" + i +"-th attempt)";
 		}
-		data.p1status = r == errmsg ? "読み取り不可" : "読み取りOK!";
+		p.status = r == errmsg ? "読み取り不可" : "読み取りOK!";
 		// for debug
-		// data.p1status = r + "(" + i +"-th attempt)";
-		data.p1char = r;
+		// p.status = r + "(" + i +"-th attempt)";
+		p.char = r;
 	}
 }, false); 
