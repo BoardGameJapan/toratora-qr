@@ -85,9 +85,9 @@ function decodeImageFromBase64promise(data)
 
 document.getElementById("action").addEventListener('click', async function() {
 	if (localStream) {
-		s.status = "Player1読み取り中";
 		// 状況によりpを切り替え
 		p = data.players[data.players[0].char];
+		s.status = "Player" + data.players[0].char + "読み取り中";
 		r = errmsg;
 		for (i = 0; i < 30 && r == errmsg; i++) {
 			// canvasにコピー
@@ -109,7 +109,9 @@ document.getElementById("action").addEventListener('click', async function() {
 			// 勝敗判定(ex)
 			if (data.players[1].char == 1 && data.players[2].char == 2)
 			{
-				// p2の勝利!
+				s.status = "Player2の勝利!";
+				// reset
+				s.char = 1;
 			}
 		}
 	}
