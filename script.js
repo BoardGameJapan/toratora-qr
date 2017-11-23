@@ -41,7 +41,7 @@ if (navigator.mediaDevices) {
 	alert("getUserMedia() is not supported in your browser.");
 }
 
-const errmsg = "error decoding QR Code"
+const errmsg = "error decoding QR Code";
 
 function decodeImageFromBase64promise(data)
 {
@@ -60,7 +60,7 @@ function decodeImageFromBase64promise(data)
 
 document.getElementById("action").addEventListener('click', async function() {
 	if (localStream) {
-		r = errmsg
+		r = errmsg;
 		for (i = 0; i < 30 && r == errmsg; i++) {
 			// canvasにコピー
 			ctx.drawImage(video, 0, 0, w, h);
