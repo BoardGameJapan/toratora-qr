@@ -17,7 +17,7 @@ var data = {
 	{
 		title: 'Status',
 		status: '初期状態',
-		char: 0,
+		char: 1,
 	},
 	{
 		title: 'Player1',
@@ -31,6 +31,7 @@ var data = {
 	}
 	],
 };
+const s = data.players[0];
 var app = new Vue({
 	el: '#app',
 	data: data,
@@ -59,10 +60,10 @@ if (navigator.mediaDevices) {
 			canvas.setAttribute("height", h);
 		})
 		.catch(function(err) {
-			data.players[0].status = err.name + ": " + err.message;
+			s.status = err.name + ": " + err.message;
 		});
 } else {
-	data.players[0].status = "getUserMedia() is not supported in your browser.";
+	s.status = "getUserMedia() is not supported in your browser.";
 }
 
 const errmsg = "error decoding QR Code";
@@ -84,9 +85,9 @@ function decodeImageFromBase64promise(data)
 
 document.getElementById("action").addEventListener('click', async function() {
 	if (localStream) {
-		data.players[0].status = "Player1読み取り中";
+		s.status = "Player1読み取り中";
 		// 状況によりpを切り替え
-		p = data.players[1];
+		p = data.players[data.players[0].char];
 		r = errmsg;
 		for (i = 0; i < 30 && r == errmsg; i++) {
 			// canvasにコピー
@@ -94,9 +95,22 @@ document.getElementById("action").addEventListener('click', async function() {
 			r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
 			p.status = r + "(" + i +"-th attempt)";
 		}
+
+		p.char = r;
 		p.status = r == errmsg ? "読み取り不可" : "読み取りOK!";
 		// for debug
 		// p.status = r + "(" + i +"-th attempt)";
-		p.char = r;
+		if (r != errmsg)
+		{
+			s.char++;
+		}
+		if (s.char == 3)
+		{
+			// 勝敗判定(ex)
+			if (data.players[1].char == 1 && data.players[2].char == 2)
+			{
+				// p2の勝利!
+			}
+		}
 	}
 }, false); 
