@@ -1,17 +1,3 @@
-// based on:
-//   https://qiita.com/tkyk0317/items/7d7f327cda48086f894f
-//   https://qiita.com/Futo23/items/bff1ce1d2e1b219b243d
-navigator.mediaDevices =
-	navigator.mediaDevices ||
-	((navigator.mozGetUserMedia || navigator.webkitGetUserMedia) ? {
-		getUserMedia:
-			function(c) {
-				return new Promise(function(y, n) {
-					(navigator.mozGetUserMedia || navigator.webkitGetUserMedia).call(navigator, c, y, n);
-				});
-			}
-	} : null);
-
 var data = {
 	players: [
 	{
@@ -42,6 +28,20 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var localStream = null;
 var w, h;
+
+// based on:
+//   https://qiita.com/tkyk0317/items/7d7f327cda48086f894f
+//   https://qiita.com/Futo23/items/bff1ce1d2e1b219b243d
+navigator.mediaDevices =
+	navigator.mediaDevices ||
+	((navigator.mozGetUserMedia || navigator.webkitGetUserMedia) ? {
+		getUserMedia:
+			function(c) {
+				return new Promise(function(y, n) {
+					(navigator.mozGetUserMedia || navigator.webkitGetUserMedia).call(navigator, c, y, n);
+				});
+			}
+	} : null);
 
 if (navigator.mediaDevices) {
 	var constraints = { audio: false, video: { facingMode: "environment", width: 1280, height: 720 } };
