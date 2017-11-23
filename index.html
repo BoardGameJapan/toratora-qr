@@ -3,7 +3,8 @@
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
-		<title>Toratora QRcode Reader</title>
+		<title>Toratora QRReader</title>
+		<link rel="stylesheet" href="style.css" type="text/css"/>
 		<script defer="defer" src="jsqrcode/src/grid.js"></script>
 		<script defer="defer" src="jsqrcode/src/version.js"></script>
 		<script defer="defer" src="jsqrcode/src/detector.js"></script>
@@ -21,13 +22,22 @@
 		<script defer="defer" src="jsqrcode/src/findpat.js"></script>
 		<script defer="defer" src="jsqrcode/src/alignpat.js"></script>
 		<script defer="defer" src="jsqrcode/src/databr.js"></script>
+		<script src="https://unpkg.com/vue"></script>
 		<script defer="defer" src="script.js"></script>
 	</head>
 	<body>
-		<h1>Toratora QRcode Reader</h1>
+		<h1>Toratora QRReader</h1>
+		<dl id="app">
+			<dt>Status</dt>
+			<dd>{{ status }}</dd>
+			<dt>Player1</dt>
+			<dd>{{ p1status }}</dd>
+			<dt>Player2</dt>
+			<dd>{{ p2status }}</dd>
+		</dl>
 		<video id="video" width="1280" height="720" autoplay="autoplay" muted="muted" playsinline="playsinline"></video>
 		<button type="button" id="action" tabindex="0" accesskey="r">Read!</button>
-		<canvas id="canvas" style="display:none"></canvas>
+		<canvas id="canvas"></canvas>
 		<noscript>JavaScript is disabled in your environment!</noscript>
 	</body>
 </html>

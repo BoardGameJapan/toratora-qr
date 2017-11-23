@@ -12,6 +12,18 @@ navigator.mediaDevices =
 			}
 	} : null);
 
+var data = {
+	status: '初期状態',
+	p1status: '未読み取り',
+	p2status: '未読み取り',
+	p1char: 0,
+	p2char: 0,
+};
+var app = new Vue({
+	el: '#app',
+	data: data,
+});
+
 var video = document.getElementById('video');
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -35,10 +47,10 @@ if (navigator.mediaDevices) {
 			canvas.setAttribute("height", h);
 		})
 		.catch(function(err) {
-			console.log(err.name + ": " + err.message);
+			data.status = err.name + ": " + err.message;
 		});
 } else {
-	alert("getUserMedia() is not supported in your browser.");
+	data.status = "getUserMedia() is not supported in your browser.";
 }
 
 const errmsg = "error decoding QR Code";
@@ -60,13 +72,17 @@ function decodeImageFromBase64promise(data)
 
 document.getElementById("action").addEventListener('click', async function() {
 	if (localStream) {
+		data.status = "Player1読み取り中";
 		r = errmsg;
 		for (i = 0; i < 30 && r == errmsg; i++) {
 			// canvasにコピー
 			ctx.drawImage(video, 0, 0, w, h);
 			r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
-			console.log("Result: " + r + "(" + i +"-th attempt)");
+			data.p1status = r + "(" + i +"-th attempt)";
 		}
-		alert(r);
+		data.p1status = r == errmsg ? "読み取り不可" : "読み取りOK!";
+		// for debug
+		// data.p1status = r + "(" + i +"-th attempt)";
+		data.p1char = r;
 	}
 }, false); 

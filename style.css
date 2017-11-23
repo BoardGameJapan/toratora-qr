@@ -1,0 +1,14 @@
+canvas
+{
+	display: none;
+}
+dt:before {
+	content: "";
+	display: block;
+}
+dt:after {
+	content: ":";
+}
+dt, dd {
+	display: inline;
+}
