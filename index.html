@@ -4,103 +4,30 @@
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
 		<title>Toratora QRcode Reader</title>
-		<script src="jsqrcode/src/grid.js"></script>
-		<script src="jsqrcode/src/version.js"></script>
-		<script src="jsqrcode/src/detector.js"></script>
-		<script src="jsqrcode/src/formatinf.js"></script>
-		<script src="jsqrcode/src/errorlevel.js"></script>
-		<script src="jsqrcode/src/bitmat.js"></script>
-		<script src="jsqrcode/src/datablock.js"></script>
-		<script src="jsqrcode/src/bmparser.js"></script>
-		<script src="jsqrcode/src/datamask.js"></script>
-		<script src="jsqrcode/src/rsdecoder.js"></script>
-		<script src="jsqrcode/src/gf256poly.js"></script>
-		<script src="jsqrcode/src/gf256.js"></script>
-		<script src="jsqrcode/src/decoder.js"></script>
-		<script src="jsqrcode/src/qrcode.js"></script>
-		<script src="jsqrcode/src/findpat.js"></script>
-		<script src="jsqrcode/src/alignpat.js"></script>
-		<script src="jsqrcode/src/databr.js"></script>
+		<script defer="defer" src="jsqrcode/src/grid.js"></script>
+		<script defer="defer" src="jsqrcode/src/version.js"></script>
+		<script defer="defer" src="jsqrcode/src/detector.js"></script>
+		<script defer="defer" src="jsqrcode/src/formatinf.js"></script>
+		<script defer="defer" src="jsqrcode/src/errorlevel.js"></script>
+		<script defer="defer" src="jsqrcode/src/bitmat.js"></script>
+		<script defer="defer" src="jsqrcode/src/datablock.js"></script>
+		<script defer="defer" src="jsqrcode/src/bmparser.js"></script>
+		<script defer="defer" src="jsqrcode/src/datamask.js"></script>
+		<script defer="defer" src="jsqrcode/src/rsdecoder.js"></script>
+		<script defer="defer" src="jsqrcode/src/gf256poly.js"></script>
+		<script defer="defer" src="jsqrcode/src/gf256.js"></script>
+		<script defer="defer" src="jsqrcode/src/decoder.js"></script>
+		<script defer="defer" src="jsqrcode/src/qrcode.js"></script>
+		<script defer="defer" src="jsqrcode/src/findpat.js"></script>
+		<script defer="defer" src="jsqrcode/src/alignpat.js"></script>
+		<script defer="defer" src="jsqrcode/src/databr.js"></script>
+		<script defer="defer" src="script.js"></script>
 	</head>
 	<body>
 		<h1>Toratora QRcode Reader</h1>
-		<video id="video" width="800" height="600" autoplay="autoplay" muted="muted" playsinline="playsinline"></video>
-		<img id="img"/>
-		<div style="display:none">
-			<canvas id="canvas"></canvas>
-		</div>
-		<input type="button" id="action" value="Read!"></input>
+		<video id="video" width="1280" height="720" autoplay="autoplay" muted="muted" playsinline="playsinline"></video>
+		<button type="button" id="action" tabindex="0" accesskey="r">Read!</button>
+		<canvas id="canvas" style="display:none"></canvas>
+		<noscript>JavaScript is disabled in your environment!</noscript>
 	</body>
-
-	<script>
-		// based on:
-		//   https://qiita.com/tkyk0317/items/7d7f327cda48086f894f
-		//   https://qiita.com/Futo23/items/bff1ce1d2e1b219b243d
-		navigator.mediaDevices =
-			navigator.mediaDevices ||
-			((navigator.mozGetUserMedia || navigator.webkitGetUserMedia) ? {
-				getUserMedia:
-					function(c) {
-						return new Promise(function(y, n) {
-							(navigator.mozGetUserMedia || navigator.webkitGetUserMedia).call(navigator, c, y, n);
-						});
-					}
-			} : null);
-
-		var video = document.getElementById('video');
-		var localStream = null;
-		var constraints = { audio: false, video: { facingMode: "environment", width: 1280, height: 720 } };
-		if (navigator.mediaDevices) {
-			navigator.mediaDevices.getUserMedia(constraints)
-				.then(function(stream) {
-					// video.src = window.URL.createObjectURL(stream);
-					video.srcObject = stream;
-					localStream = stream;
-				})
-				.catch(function(err) {
-					console.log(err.name + ": " + err.message);
-				});
-		} else {
-			alert("getUserMedia() is not supported in your browser.");
-		}
-
-		function decodeImageFromBase64promise(data)
-		{
-			return new Promise(function(resolve, reject) {
-				qrcode.callback = function(result) {
-					if (result == "error decoding QR Code") {
-						// 本来はrejectすべきところのはず
-						resolve(result);
-					}
-					resolve(result);
-				};
-				qrcode.decode(data);
-			});
-		}
-
-		document.getElementById("action").addEventListener('click', async function() {
-			if (localStream) {
-				var canvas = document.getElementById('canvas');
-				var ctx = canvas.getContext('2d');
-				var img = document.getElementById('img');
-
-				// videoの縦幅横幅を取得
-				var w = video.offsetWidth;
-				var h = video.offsetHeight;
-
-				// 同じサイズをcanvasに指定
-				canvas.setAttribute("width", w);
-				canvas.setAttribute("height", h);
-
-				r = "error decoding QR Code"
-				for (i = 0; i < 30 && r == "error decoding QR Code"; i++) {
-					// canvasにコピー
-					ctx.drawImage(video, 0, 0, w, h);
-					r = await decodeImageFromBase64promise(canvas.toDataURL('image/png'))
-					console.log("Result: " + r + "(" + i +"-th attempt)");
-				}
-				alert(r);
-			}
-		}, false);
-	</script>
 </html>
