@@ -127,6 +127,8 @@ document.getElementById("action").addEventListener('click', async function() {
 
 			// reset
 			s.char = 1;
+			data.players[1].char = 0;
+			data.players[2].char = 0;
 		}
 	}
 }, false); 
