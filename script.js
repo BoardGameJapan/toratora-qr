@@ -101,6 +101,7 @@ async function detectNumOfQRcode()
 
 function judgeWinPlayer(p1, p2)
 {
+	console.log("judge: Player1: " + p1 + ", Player2: " + p2);
 	var mod = p2 - p1 % 4;
 	// 0ならあいこ、1or2ならPlayer1(2)が勝利
 	return (mod == 1) ? 2 : (mod == -1) ? 1 : 0;
