@@ -120,14 +120,18 @@ document.getElementById("action").addEventListener('click', async function() {
 			// p.status = result + "(" + i +"-th attempt)";
 			p.status = "読み取りOK!";
 
-			// 勝敗判定
-			var judge = jugdeWinPlayer(data.players[1].char, data.players[2].char);
-			s.status = judge == 0 ? "あいこ" : ("Player" + judge + "の勝利!");
+			if (s.char == 1) {
+				s.char = 2;
+			} else {
+				// 勝敗判定
+				var judge = jugdeWinPlayer(data.players[1].char, data.players[2].char);
+				s.status = judge == 0 ? "あいこ" : ("Player" + judge + "の勝利!");
 
-			// reset
-			s.char = 1;
-			data.players[1].char = 0;
-			data.players[2].char = 0;
+				// reset
+				s.char = 1;
+				data.players[1].char = 0;
+				data.players[2].char = 0;
+			}
 		}
 	}
 }, false); 
