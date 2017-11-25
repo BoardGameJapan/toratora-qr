@@ -116,8 +116,6 @@ document.getElementById("action").addEventListener('click', async function() {
 		if (! result) {
 			p.status = "読み取り不可";
 		} else {
-			// for debug
-			// p.status = result + "(" + i +"-th attempt)";
 			p.status = "読み取りOK!";
 
 			if (s.char == 1) {
