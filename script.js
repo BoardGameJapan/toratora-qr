@@ -55,8 +55,7 @@ if (navigator.mediaDevices) {
 			// videoの縦幅横幅を取得
 			w = video.offsetWidth;
 			h = video.offsetHeight;
-			video.setAttribute("width", w);
-			video.setAttribute("height", h);
+			s.status += "(width: " + w + ", height: " + h + ")";
 
 			// 同じサイズをcanvasに指定
 			canvas.setAttribute("width", w);
