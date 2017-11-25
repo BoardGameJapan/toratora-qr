@@ -119,12 +119,11 @@ document.getElementById("action").addEventListener('click', async function() {
 		} else {
 			p.status = "読み取りOK!";
 
+			console.log("Finished reading player" + s.char + "!");
 			if (s.char == 1) {
 				s.char = 2;
 				s.status = "Player" + s.char + "読み取り待ち";
 			} else {
-				console.log("Finished reading!");
-
 				// 勝敗判定
 				var judge = jugdeWinPlayer(data.players[1].char, data.players[2].char);
 				s.status = judge == 0 ? "あいこ" : ("Player" + judge + "の勝利!");
