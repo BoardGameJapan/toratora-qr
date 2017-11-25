@@ -127,7 +127,7 @@ document.getElementById("action").addEventListener('click', async function() {
 			} else {
 				console.log("Finished reading!");
 				// 勝敗判定
-				var judge = jugdeWinPlayer(data.players[1].char, data.players[2].char);
+				var judge = judgeWinPlayer(data.players[1].char, data.players[2].char);
 				s.status = judge == 0 ? "あいこ" : ("Player" + judge + "の勝利!");
 
 				// reset
