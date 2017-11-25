@@ -108,8 +108,8 @@ function judgeWinPlayer(p1, p2)
 document.getElementById("action").addEventListener('click', async function() {
 	if (localStream) {
 		// 状況によりpを切り替え
-		p = data.players[data.players[0].char];
-		s.status = "Player" + data.players[0].char + "読み取り中";
+		p = data.players[s.char];
+		s.status = "Player" + s.char + "読み取り中";
 
 		// QRコードから数値を取得
 		var result = await detectNumOfQRcode();
