@@ -95,6 +95,7 @@ async function detectNumOfQRcode()
 		p.status = r + "(" + i +"-th attempt)";
 	}
 	p.char = r;
+	console.log("Player: " + s.char + ", num: " + p.char);
 	return r != errmsg;
 }
 
