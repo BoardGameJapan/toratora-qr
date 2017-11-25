@@ -122,6 +122,7 @@ document.getElementById("action").addEventListener('click', async function() {
 
 			if (s.char == 1) {
 				s.char = 2;
+				s.status = "Player" + s.char + "読み取り待ち";
 			} else {
 				// 勝敗判定
 				var judge = jugdeWinPlayer(data.players[1].char, data.players[2].char);
