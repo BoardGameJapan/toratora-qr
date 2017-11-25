@@ -44,7 +44,8 @@ navigator.mediaDevices =
 	} : null);
 
 if (navigator.mediaDevices) {
-	var constraints = { audio: false, video: { facingMode: "environment", width: 1280, height: 720 } };
+//	var constraints = { audio: false, video: { facingMode: "environment", width: 1280, height: 720 } };
+	var constraints = { audio: false, video: { facingMode: "environment" } };
 	navigator.mediaDevices.getUserMedia(constraints)
 		.then(function(stream) {
 			// video.src = window.URL.createObjectURL(stream);
@@ -98,8 +99,9 @@ async function detectNumOfQRcode()
 
 function judgeWinPlayer(p1, p2)
 {
+	var mod = p2 - p1 % 4;
 	// 0ならあいこ、1or2ならPlayer1(2)が勝利
-	return (p1 + 1 == p2) ? 2 : (p1 == p2 + 1) ? 1 : 0;
+	return (mod == 1) ? 2 : (mod == -1) ? 1 : 0;
 }
 
 document.getElementById("action").addEventListener('click', async function() {
