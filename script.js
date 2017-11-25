@@ -113,18 +113,14 @@ document.getElementById("action").addEventListener('click', async function() {
 
 		// QRコードから数値を取得
 		var result = await detectNumOfQRcode();
-		if (result) {
-			// for debug
-			// p.status = r + "(" + i +"-th attempt)";
-			p.status = "読み取りOK!";
-			s.char++;
-		} else {
+		if (! result) {
 			p.status = "読み取り不可";
-		}
+		} else {
+			// for debug
+			// p.status = result + "(" + i +"-th attempt)";
+			p.status = "読み取りOK!";
 
-		// 勝敗判定(ex)
-		if (s.char == 3)
-		{
+			// 勝敗判定
 			var judge = jugdeWinPlayer(data.players[1].char, data.players[2].char);
 			s.status = judge == 0 ? "あいこ" : ("Player" + judge + "の勝利!");
 
